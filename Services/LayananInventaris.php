@@ -50,25 +50,25 @@ class LayananInventaris
     public function cariProduk(string $sku): ?Produk
     {
         foreach ($this->daftarProduk as $produk) {
-            if (trim(strtolower($this->$produk->sku)) === trim(strtolower($sku))) {
+            if (trim(strtolower($produk->sku)) === trim(strtolower($sku))) {
                 return $produk;
             }
         }
         return null;
     }
 
-    public function tambahStok(string $sku, int $jumlah): bool
+    public function tambahStok(string $sku, int $jumlah): void
     {
         $produk = $this->cariProduk($sku);
 
         if (!$produk) {
             echo "Error: Produk dengan SKU '$sku' tidak ditemukan\n";
-            return false;
+            return;
         }
 
         if (0 >= $jumlah) {
             echo "Error: Jumlah penambahan stok harus positif\n";
-            return false;
+            return;
         }
 
         $stokLama = $produk->stok;
@@ -79,6 +79,5 @@ class LayananInventaris
         }
 
         $produk->catatAktivitas("Stok untuk '{$produk->nama}' berhasil diperbarui dari $stokLama menjadi {$produk->stok}");
-        return true;
     }
 }
